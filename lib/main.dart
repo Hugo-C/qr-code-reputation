@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:qr_code_reputation/url_reputation.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() {
@@ -44,6 +45,14 @@ class _QRScanState extends State<QRScan> {
     }
   }
 
+  void _goToUrlReputation() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => UrlReputation(url: result!.code!)),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
@@ -68,7 +77,7 @@ class _QRScanState extends State<QRScan> {
             child: Center(
               child: ElevatedButton(
                 style: style,
-                onPressed: isQrCodeFound ? () {} : null,
+                onPressed: isQrCodeFound ? _goToUrlReputation : null,
                 child: Text(buttonText),
               )
             ),
