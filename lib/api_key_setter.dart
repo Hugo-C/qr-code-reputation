@@ -1,18 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:qr_code_reputation/api_key_setter.dart';
-import 'package:qr_code_reputation/url_reputation.dart';
+import 'package:qr_code_reputation/main.dart';
 import 'package:qr_code_reputation/virus_total.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MainApp());
-}
 
-class MainApp extends StatelessWidget {
-  const MainApp({Key? key}) : super(key: key);
+class ApiKeySetter extends StatelessWidget {
+  const ApiKeySetter({Key? key}) : super(key: key);
 
   // #docregion build
   @override
@@ -39,15 +35,6 @@ class _QRScanState extends State<QRScan> {
   @override
   void initState() {
     super.initState();
-
-    // Check if VT API key is set, else ask for it
-    SharedPreferences.getInstance().then((pref) {
-    if (pref.getString(vtAPIKeyPref) == null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ApiKeySetter()),
-        );
-  }});
   }
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -62,11 +49,14 @@ class _QRScanState extends State<QRScan> {
     }
   }
 
-  void _goToUrlReputation() {
-    controller?.pauseCamera();
+  void _setApiKey() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(vtAPIKeyPref, result!.code!);
+
+    // Return to the main page
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => UrlReputation(url: result!.code!)),
+      MaterialPageRoute(builder: (context) => const MainApp()),
     );
   }
 
@@ -75,10 +65,10 @@ class _QRScanState extends State<QRScan> {
   Widget build(BuildContext context) {
     final ButtonStyle style = ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
 
-    var buttonText = 'Scan a qr code to begin';
+    var buttonText = 'Scan the qr code containing your API key';
     var isQrCodeFound = result != null && result!.format == BarcodeFormat.qrcode;
     if (isQrCodeFound) {
-      buttonText = 'Ask VT about : ${result!.code}';  // TODO format
+      buttonText = 'Register this VT API KEY : ${result!.code?.substring(0, 4)}xxx';
     }
     return Scaffold(
       body: Column(
@@ -93,11 +83,11 @@ class _QRScanState extends State<QRScan> {
           Expanded(
             flex: 1,
             child: Center(
-              child: ElevatedButton(
-                style: style,
-                onPressed: isQrCodeFound ? _goToUrlReputation : null,
-                child: Text(buttonText),
-              )
+                child: ElevatedButton(
+                  style: style,
+                  onPressed: isQrCodeFound ? _setApiKey : null,
+                  child: Text(buttonText),
+                )
             ),
           )
         ],

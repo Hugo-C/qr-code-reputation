@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
+const vtAPIKeyPref = 'VT_API_KEY';
 const maxVtScanTime = 60;
 
 class UrlNotFoundInVirusTotal implements Exception {
@@ -9,6 +11,17 @@ class UrlNotFoundInVirusTotal implements Exception {
 }
 
 class VirusTotal {
+  String? _apiKey;
+
+  // get wrapper around the SharedPreferences
+  Future<String> getApiKey() async {
+    if (_apiKey != null) { return _apiKey!; }
+
+    var pref = await SharedPreferences.getInstance();
+    _apiKey = pref.getString(vtAPIKeyPref)!;
+    return _apiKey!;
+  }
+
   Future<VirusTotalUrlResult> getUrlReport(String url) async {
     try {
       log('Fetching existing report for $url');
@@ -38,8 +51,7 @@ class VirusTotal {
 
   Future<VirusTotalUrlResult> _fetchReport(String url) async {
     var formattedUrl = _formatUrl(url);
-    const apiKey = 'XXX_API_KEY_XXX';
-    var headers = {'x-apikey': apiKey};
+    var headers = {'x-apikey': await getApiKey()};
     var res = await http.get(
         Uri.parse('https://www.virustotal.com/api/v3/urls/$formattedUrl'),
         headers: headers,
@@ -52,9 +64,8 @@ class VirusTotal {
   }
 
   Future<void> _submitUrl(String url) async {
-    const apiKey = 'XXX_API_KEY_XXX';
     var headers = {
-      'x-apikey': apiKey,
+      'x-apikey': await getApiKey(),
       'Content-Type': 'application/x-www-form-urlencoded',
     };
     var body = 'url=$url';  // Url must not be formatted in POST requests
