@@ -44,6 +44,7 @@ class _UrlReputationState extends State<UrlReputation> {
             Text(
                 ' ${widget.url} ',
                 style: textStyle,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis
             ),
             const Spacer(flex: 1),
@@ -108,7 +109,7 @@ class _UrlReputationState extends State<UrlReputation> {
                 child: Icon(
                   Icons.people,
                   color:
-                      result.communityOpinion <= 0 ? Colors.red : Colors.green,
+                      result.communityOpinion < 0 ? Colors.red : Colors.green,
                   size: 24.0,
                   semanticLabel: 'Community score',
                 ),
