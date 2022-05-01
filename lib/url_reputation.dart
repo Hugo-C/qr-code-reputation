@@ -65,6 +65,9 @@ class _UrlReputationState extends State<UrlReputation> {
             ),
           ),
           ),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+            )
         ],
       ),
     ),
