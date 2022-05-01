@@ -46,6 +46,7 @@ class _QRScanState extends State<QRScan> {
   }
 
   void _goToUrlReputation() {
+    controller?.pauseCamera();
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => UrlReputation(url: result!.code!)),
@@ -60,7 +61,7 @@ class _QRScanState extends State<QRScan> {
     var buttonText = 'Scan a qr code to begin';
     var isQrCodeFound = result != null && result!.format == BarcodeFormat.qrcode;
     if (isQrCodeFound) {
-      buttonText = 'URL found: ${result!.code}';  // TODO format
+      buttonText = 'Ask VT about : ${result!.code}';  // TODO format
     }
     return Scaffold(
       body: Column(

@@ -20,7 +20,7 @@ class _UrlReputationState extends State<UrlReputation> {
   void initState() {
     super.initState();
     vtResult = vt.getUrlReport(widget.url);
-    vtResultReady = true;
+    vtResult.then((value) => vtResultReady = true);
   }
 
   void _goToVtLink() async {
@@ -41,9 +41,10 @@ class _UrlReputationState extends State<UrlReputation> {
           child: Column(
           children: <Widget>[
              const Spacer(flex: 1),
-             Text(
-              ' ${widget.url} ',
-              style: textStyle,
+            Text(
+                ' ${widget.url} ',
+                style: textStyle,
+                overflow: TextOverflow.ellipsis
             ),
             const Spacer(flex: 1),
           Expanded(
@@ -125,7 +126,7 @@ class _UrlReputationState extends State<UrlReputation> {
                   semanticLabel: 'url icon',
                 ),
               ),
-              Text('final url: ${result.finalUrl}'),
+              Text('final url: ${result.finalUrl}', overflow: TextOverflow.ellipsis),
             ],
           ),
         ]);
