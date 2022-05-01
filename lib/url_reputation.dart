@@ -115,7 +115,7 @@ class _UrlReputationState extends State<UrlReputation> {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               const Padding(
                 padding: iconPadding,
@@ -126,7 +126,14 @@ class _UrlReputationState extends State<UrlReputation> {
                   semanticLabel: 'url icon',
                 ),
               ),
-              Text('final url: ${result.finalUrl}', overflow: TextOverflow.ellipsis),
+              Expanded(
+                child: Text(
+                  'final url: ${result.finalUrl}',
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              )
             ],
           ),
         ]);
