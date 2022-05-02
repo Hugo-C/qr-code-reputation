@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class MainApp extends StatelessWidget {
 // #enddocregion build
 }
 
-class _QRScanState extends State<QRScan> {
+class _QRScanState extends State<QRScan>  with WidgetsBindingObserver {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode? result;
   QRViewController? controller;
@@ -39,6 +40,7 @@ class _QRScanState extends State<QRScan> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
 
     // Check if VT API key is set, else ask for it
     SharedPreferences.getInstance().then((pref) {
@@ -115,7 +117,17 @@ class _QRScanState extends State<QRScan> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    log(state.name);
+    if (state == AppLifecycleState.resumed) {
+      log("Resumed camera");
+      controller?.resumeCamera();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
     controller?.dispose();
     super.dispose();
   }
