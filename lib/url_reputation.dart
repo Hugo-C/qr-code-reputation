@@ -20,7 +20,10 @@ class _UrlReputationState extends State<UrlReputation> {
   void initState() {
     super.initState();
     vtResult = vt.getUrlReport(widget.url);
-    vtResult.then((value) => vtResultReady = true);
+    vtResult.then((value) {
+      vtResultReady = true;
+      setState(() {});
+    });
   }
 
   void _goToVtLink() async {
