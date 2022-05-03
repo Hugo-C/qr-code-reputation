@@ -16,7 +16,7 @@
 You will first need to register your VirusTotal API key inside the app.  
 > Need an API key ? Get one for free by registering in VirusTotal. Head over [here](https://www.virustotal.com/gui/my-apikey).
 
-1. The first time you launch the app, you will have to scan your VirusTotal API key displayed as a QR code.  
+1. The first time you launch the [app](https://github.com/Hugo-C/qr-code-reputation/releases), you will have to scan your VirusTotal API key displayed as a QR code.  
    You can use Google Chrome to generate a QR code, just go to a website then click on share in the address bar, the value can then be modified:  
    <p align="center">
     <img src="readme_pictures/chrome_qr_code.PNG" alt="chrome tooltip to generate QR code">
