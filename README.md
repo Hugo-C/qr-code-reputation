@@ -25,7 +25,7 @@ You will first need to register your VirusTotal API key inside the app.
    <p align="center">
     <img src="/readme_pictures/scan_qr_code.PNG" alt="App icon">
    </p>
-3. If VirusTotal already seen its URL, the result will appear immediately. If not the app will request a scan and display its result in *around* a minute.  
+3. If VirusTotal has already seen its URL, the result will appear immediately. If not the app will request a scan and display its result in *around* a minute.  
    <p align="center">
     <img src="/readme_pictures/scan_result.PNG" alt="scan result as displayed by the app">
    </p>   
